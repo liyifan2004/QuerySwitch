@@ -98,5 +98,9 @@
   "resetToDefaults": {
     "message": "Reset to Defaults",
     "description": "Reset button"
+  },
+  "shortcutsInstructions": {
+    "message": "To customize shortcuts:\n1. Go to chrome://extensions/\n2. Click the menu (☰) → Keyboard shortcuts\n3. Find QuerySwitch and set your shortcuts",
+    "description": "Instructions for customizing keyboard shortcuts"
   }
 }

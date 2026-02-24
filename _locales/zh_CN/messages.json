@@ -98,5 +98,9 @@
   "resetToDefaults": {
     "message": "恢复默认设置",
     "description": "重置按钮"
+  },
+  "shortcutsInstructions": {
+    "message": "自定义快捷键方法：\n1. 打开 chrome://extensions/\n2. 点击菜单 (☰) → 键盘快捷键\n3. 找到 QuerySwitch 并设置你的快捷键",
+    "description": "自定义键盘快捷键的说明"
   }
 }

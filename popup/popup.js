@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', async () => {
  * Initialize popup
  */
 async function initializePopup() {
+  // Initialize i18n text
+  await initializeI18n();
+  
   // Get current tab info
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   

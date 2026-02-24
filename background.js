@@ -3,7 +3,14 @@
  * Handles context menu, keyboard shortcuts, and tab management
  */
 
-importScripts('shared/constants.js', 'shared/utils.js');
+// Import shared scripts for service worker context
+// Note: In MV3 with type: 'module', we need to handle imports differently
+// The constants and utils are loaded via importScripts but we need to ensure they're available
+try {
+  importScripts('shared/constants.js', 'shared/utils.js');
+} catch (e) {
+  console.error('Failed to import shared scripts:', e);
+}
 
 // Context menu ID
 const CONTEXT_MENU_PARENT = 'queryswitch-parent';
@@ -21,51 +28,87 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       [STORAGE_KEYS.SETTINGS]: DEFAULT_SETTINGS
     });
     
-    console.log('QuerySwitch installed successfully');
+    console.log('[QuerySwitch] Extension installed successfully');
   }
   
-  // Create context menu
-  createContextMenu();
+  if (details.reason === 'update') {
+    console.log('[QuerySwitch] Extension updated from version', details.previousVersion);
+  }
+  
+  // Create context menu on install/update
+  await createContextMenu();
+});
+
+// Also create context menu on startup (service worker may be restarted)
+chrome.runtime.onStartup.addListener(async () => {
+  console.log('[QuerySwitch] Extension started');
+  await createContextMenu();
 });
 
 /**
  * Create context menu structure
  */
 async function createContextMenu() {
-  // Remove existing menus
-  await chrome.contextMenus.removeAll();
-  
-  // Create parent menu item
-  chrome.contextMenus.create({
-    id: CONTEXT_MENU_PARENT,
-    title: chrome.i18n.getMessage('contextMenuTitle') || 'Switch Search Engine',
-    contexts: ['page'],
-    documentUrlPatterns: [
-      '*://*.google.com/search*',
-      '*://*.baidu.com/s*',
-      '*://*.bing.com/search*',
-      '*://*.yahoo.com/search*',
-      '*://*.duckduckgo.com/*'
-    ]
-  });
-  
-  // Get enabled engines and create submenu
-  const engines = await getEnabledEngines();
-  
-  for (const engine of engines) {
-    chrome.contextMenus.create({
-      id: `${CONTEXT_MENU_SWITCH_TO}${engine.id}`,
-      parentId: CONTEXT_MENU_PARENT,
-      title: engine.name,
-      contexts: ['page'],
-      documentUrlPatterns: [
-        '*://*.google.com/search*',
-        '*://*.baidu.com/s*',
-        '*://*.bing.com/search*',
-        '*://*.yahoo.com/search*',
-        '*://*.duckduckgo.com/*'
-      ]
+  try {
+    // Remove existing menus
+    await chrome.contextMenus.removeAll();
+    
+    // Create parent menu item
+    await new Promise((resolve, reject) => {
+      chrome.contextMenus.create({
+        id: CONTEXT_MENU_PARENT,
+        title: chrome.i18n.getMessage('contextMenuTitle') || 'Switch Search Engine',
+        contexts: ['page'],
+        documentUrlPatterns: [
+          '*://*.google.com/search*',
+          '*://*.baidu.com/s*',
+          '*://*.bing.com/search*',
+          '*://*.yahoo.com/search*',
+          '*://*.duckduckgo.com/*'
+        ]
+      }, () => {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve();
+        }
+      });
     });
+    
+    // Get enabled engines and create submenu
+    const engines = await getEnabledEngines();
+    
+    // Create submenu items in parallel
+    const createPromises = engines.map(engine => {
+      return new Promise((resolve, reject) => {
+        chrome.contextMenus.create({
+          id: `${CONTEXT_MENU_SWITCH_TO}${engine.id}`,
+          parentId: CONTEXT_MENU_PARENT,
+          title: engine.name,
+          contexts: ['page'],
+          documentUrlPatterns: [
+            '*://*.google.com/search*',
+            '*://*.baidu.com/s*',
+            '*://*.bing.com/search*',
+            '*://*.yahoo.com/search*',
+            '*://*.duckduckgo.com/*'
+          ]
+        }, () => {
+          if (chrome.runtime.lastError) {
+            console.warn(`Failed to create menu for ${engine.id}:`, chrome.runtime.lastError);
+            // Don't reject, just log the error and continue
+            resolve();
+          } else {
+            resolve();
+          }
+        });
+      });
+    });
+    
+    await Promise.all(createPromises);
+    console.log('[QuerySwitch] Context menu created successfully with', engines.length, 'engines');
+  } catch (error) {
+    console.error('[QuerySwitch] Failed to create context menu:', error);
   }
 }
 

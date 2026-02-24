@@ -112,3 +112,13 @@ if (typeof module !== 'undefined' && module.exports) {
     openSearchInNewTab
   };
 }
+
+// For Chrome extension content scripts and service worker
+if (typeof self !== 'undefined') {
+  self.extractQueryFromURL = extractQueryFromURL;
+  self.buildSearchURL = buildSearchURL;
+  self.detectSearchEngine = detectSearchEngine;
+  self.isSearchResultsPage = isSearchResultsPage;
+  self.getEnabledEngines = getEnabledEngines;
+  self.openSearchInNewTab = openSearchInNewTab;
+}

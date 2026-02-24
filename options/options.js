@@ -13,6 +13,7 @@ async function initializeOptions() {
   await loadSettings();
   await loadEngines();
   setupEventListeners();
+  await initializeI18n(); // Initialize language on page load
 }
 
 /**
@@ -89,6 +90,9 @@ function setupEventListeners() {
     const settings = result[STORAGE_KEYS.SETTINGS] || DEFAULT_SETTINGS;
     settings.language = e.target.value;
     await chrome.storage.sync.set({ [STORAGE_KEYS.SETTINGS]: settings });
+    
+    // Immediately update UI language
+    await updatePageLanguage();
   });
   
   // Engine toggle
@@ -173,7 +177,10 @@ function setupEventListeners() {
   // Open shortcuts
   document.getElementById('open-shortcuts').addEventListener('click', (e) => {
     e.preventDefault();
-    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+    // Show instructions instead of trying to open chrome:// URL (which is blocked)
+    const message = getMessage('shortcutsHint') || 
+      'To customize shortcuts:\n1. Go to chrome://extensions/\n2. Click the menu (☰) → Keyboard shortcuts\n3. Find QuerySwitch and set your shortcuts';
+    alert(message);
   });
   
   // Reset

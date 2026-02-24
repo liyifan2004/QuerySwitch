@@ -77,3 +77,10 @@ const DEFAULT_SETTINGS = {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { BUILTIN_ENGINES, STORAGE_KEYS, DEFAULT_SETTINGS };
 }
+
+// For Chrome extension content scripts and service worker
+if (typeof self !== 'undefined') {
+  self.BUILTIN_ENGINES = BUILTIN_ENGINES;
+  self.STORAGE_KEYS = STORAGE_KEYS;
+  self.DEFAULT_SETTINGS = DEFAULT_SETTINGS;
+}
