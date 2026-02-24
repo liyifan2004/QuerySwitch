@@ -102,5 +102,21 @@
   "shortcutsInstructions": {
     "message": "To customize shortcuts:\n1. Go to chrome://extensions/\n2. Click the menu (☰) → Keyboard shortcuts\n3. Find QuerySwitch and set your shortcuts",
     "description": "Instructions for customizing keyboard shortcuts"
+  },
+  "saveShortcuts": {
+    "message": "Save Shortcuts",
+    "description": "Save shortcuts button"
+  },
+  "resetShortcuts": {
+    "message": "Reset to Default",
+    "description": "Reset shortcuts button"
+  },
+  "shortcutsSaved": {
+    "message": "Shortcuts saved successfully!",
+    "description": "Success message after saving shortcuts"
+  },
+  "shortcutsReset": {
+    "message": "Shortcuts reset to default!",
+    "description": "Success message after resetting shortcuts"
   }
 }

@@ -2,6 +2,16 @@
  * QuerySwitch - Options Page Script
  */
 
+// Store for shortcut inputs
+let shortcutInputs = {};
+
+// Default shortcuts from manifest
+const DEFAULT_SHORTCUTS = {
+  'switch-to-google': 'Ctrl+Shift+G',
+  'switch-to-baidu': 'Ctrl+Shift+B',
+  'switch-to-bing': 'Ctrl+Shift+M'
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initializeOptions();
 });
@@ -12,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initializeOptions() {
   await loadSettings();
   await loadEngines();
+  await loadShortcuts();
   setupEventListeners();
   await initializeI18n(); // Initialize language on page load
 }
@@ -78,6 +89,126 @@ function createEngineListItem(id, engine, enabled, isBuiltin) {
   `;
   
   return item;
+}
+
+/**
+ * Load and display keyboard shortcuts
+ */
+async function loadShortcuts() {
+  const shortcutsList = document.getElementById('shortcuts-list');
+  shortcutsList.innerHTML = '';
+  shortcutInputs = {};
+  
+  try {
+    // Get all commands
+    const commands = await chrome.commands.getAll();
+    
+    for (const command of commands) {
+      if (command.name.startsWith('switch-to-')) {
+        const engineId = command.name.replace('switch-to-', '');
+        const engineName = BUILTIN_ENGINES[engineId]?.name || engineId;
+        
+        const shortcutItem = createShortcutItem(command.name, engineName, command.shortcut);
+        shortcutsList.appendChild(shortcutItem);
+      }
+    }
+  } catch (error) {
+    console.error('Error loading shortcuts:', error);
+    shortcutsList.innerHTML = '<p class="error">Failed to load shortcuts</p>';
+  }
+}
+
+/**
+ * Create shortcut input item
+ */
+function createShortcutItem(commandName, engineName, currentShortcut) {
+  const item = document.createElement('div');
+  item.className = 'shortcut-item';
+  
+  const shortcutId = `shortcut-${commandName}`;
+  shortcutInputs[commandName] = {
+    shortcut: currentShortcut || '',
+    element: null
+  };
+  
+  item.innerHTML = `
+    <div class="shortcut-info">
+      <div class="shortcut-name">${escapeHtml(engineName)}</div>
+      <div class="shortcut-command">${escapeHtml(commandName)}</div>
+    </div>
+    <div class="shortcut-input-wrapper">
+      <input type="text" 
+             id="${shortcutId}" 
+             class="shortcut-input" 
+             value="${escapeHtml(currentShortcut || '')}" 
+             placeholder="Click to set shortcut"
+             readonly>
+      <button class="btn btn-small btn-clear-shortcut" data-command="${commandName}">✕</button>
+    </div>
+  `;
+  
+  // Store reference to input element
+  const input = item.querySelector('.shortcut-input');
+  shortcutInputs[commandName].element = input;
+  
+  // Add keyboard capture
+  input.addEventListener('keydown', (e) => handleShortcutKeydown(e, commandName));
+  input.addEventListener('focus', () => {
+    input.placeholder = 'Press keys...';
+  });
+  input.addEventListener('blur', () => {
+    input.placeholder = 'Click to set shortcut';
+  });
+  
+  // Add clear button handler
+  const clearBtn = item.querySelector('.btn-clear-shortcut');
+  clearBtn.addEventListener('click', () => {
+    shortcutInputs[commandName].shortcut = '';
+    input.value = '';
+  });
+  
+  return item;
+}
+
+/**
+ * Handle keydown for shortcut input
+ */
+function handleShortcutKeydown(e, commandName) {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  // Allow Escape to cancel
+  if (e.key === 'Escape') {
+    e.target.blur();
+    return;
+  }
+  
+  // Allow Backspace/Delete to clear
+  if (e.key === 'Backspace' || e.key === 'Delete') {
+    shortcutInputs[commandName].shortcut = '';
+    e.target.value = '';
+    return;
+  }
+  
+  // Build shortcut string
+  const parts = [];
+  
+  if (e.ctrlKey) parts.push('Ctrl');
+  if (e.altKey) parts.push('Alt');
+  if (e.shiftKey) parts.push('Shift');
+  if (e.metaKey) parts.push('Command');
+  
+  // Add the key (ignore modifiers alone)
+  const key = e.key;
+  if (key && !['Control', 'Alt', 'Shift', 'Meta'].includes(key)) {
+    // Capitalize single letters
+    const formattedKey = key.length === 1 ? key.toUpperCase() : key;
+    parts.push(formattedKey);
+    
+    const shortcut = parts.join('+');
+    shortcutInputs[commandName].shortcut = shortcut;
+    e.target.value = shortcut;
+  }
 }
 
 /**
@@ -174,14 +305,11 @@ function setupEventListeners() {
     await loadEngines();
   });
   
-  // Open shortcuts
-  document.getElementById('open-shortcuts').addEventListener('click', (e) => {
-    e.preventDefault();
-    // Show instructions instead of trying to open chrome:// URL (which is blocked)
-    const message = getMessage('shortcutsHint') || 
-      'To customize shortcuts:\n1. Go to chrome://extensions/\n2. Click the menu (☰) → Keyboard shortcuts\n3. Find QuerySwitch and set your shortcuts';
-    alert(message);
-  });
+  // Save shortcuts
+  document.getElementById('save-shortcuts').addEventListener('click', saveShortcuts);
+  
+  // Reset shortcuts
+  document.getElementById('reset-shortcuts').addEventListener('click', resetShortcuts);
   
   // Reset
   document.getElementById('reset-btn').addEventListener('click', async () => {
@@ -194,8 +322,68 @@ function setupEventListeners() {
       
       await loadSettings();
       await loadEngines();
+      await loadShortcuts();
     }
   });
+}
+
+/**
+ * Save keyboard shortcuts
+ */
+async function saveShortcuts() {
+  try {
+    let updatedCount = 0;
+    
+    for (const [commandName, data] of Object.entries(shortcutInputs)) {
+      const newShortcut = data.shortcut;
+      
+      // Update the command
+      await chrome.commands.update({
+        name: commandName,
+        shortcut: newShortcut || ''
+      });
+      
+      updatedCount++;
+    }
+    
+    // Show success message
+    const messages = await loadMessages(currentLanguage || 'en');
+    const savedText = getMessageFromObject(messages, 'shortcutsSaved') || 'Shortcuts saved successfully!';
+    alert(savedText);
+    
+    // Reload shortcuts to show updated state
+    await loadShortcuts();
+  } catch (error) {
+    console.error('Error saving shortcuts:', error);
+    alert('Failed to save shortcuts: ' + error.message);
+  }
+}
+
+/**
+ * Reset shortcuts to defaults
+ */
+async function resetShortcuts() {
+  if (!confirm('Reset all shortcuts to default?')) {
+    return;
+  }
+  
+  try {
+    for (const [commandName, defaultShortcut] of Object.entries(DEFAULT_SHORTCUTS)) {
+      await chrome.commands.update({
+        name: commandName,
+        shortcut: defaultShortcut
+      });
+    }
+    
+    await loadShortcuts();
+    
+    const messages = await loadMessages(currentLanguage || 'en');
+    const resetText = getMessageFromObject(messages, 'shortcutsReset') || 'Shortcuts reset to default!';
+    alert(resetText);
+  } catch (error) {
+    console.error('Error resetting shortcuts:', error);
+    alert('Failed to reset shortcuts: ' + error.message);
+  }
 }
 
 /**

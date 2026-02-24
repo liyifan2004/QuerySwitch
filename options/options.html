@@ -40,12 +40,17 @@
       <section class="section">
         <h2 data-i18n="keyboardShortcuts">Keyboard Shortcuts</h2>
         <p class="hint" data-i18n="shortcutsHint">
-          Shortcuts can be customized in your browser's extension settings.
+          Shortcuts can be customized below or in your browser's extension settings.
         </p>
         
-        <a href="#" id="open-shortcuts" class="btn btn-secondary">
-          <span data-i18n="configureShortcuts">Configure Shortcuts</span>
-        </a>
+        <div id="shortcuts-list" class="shortcuts-list">
+          <!-- Shortcuts will be populated dynamically -->
+        </div>
+        
+        <div class="shortcuts-actions">
+          <button id="save-shortcuts" class="btn btn-primary" data-i18n="saveShortcuts">Save Shortcuts</button>
+          <button id="reset-shortcuts" class="btn btn-secondary" data-i18n="resetShortcuts">Reset to Default</button>
+        </div>
       </section>
       
       <!-- Reset Section -->

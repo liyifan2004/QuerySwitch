@@ -102,5 +102,21 @@
   "shortcutsInstructions": {
     "message": "自定义快捷键方法：\n1. 打开 chrome://extensions/\n2. 点击菜单 (☰) → 键盘快捷键\n3. 找到 QuerySwitch 并设置你的快捷键",
     "description": "自定义键盘快捷键的说明"
+  },
+  "saveShortcuts": {
+    "message": "保存快捷键",
+    "description": "保存快捷键按钮"
+  },
+  "resetShortcuts": {
+    "message": "恢复默认",
+    "description": "重置快捷键按钮"
+  },
+  "shortcutsSaved": {
+    "message": "快捷键保存成功！",
+    "description": "保存快捷键后的成功消息"
+  },
+  "shortcutsReset": {
+    "message": "快捷键已恢复默认设置！",
+    "description": "重置快捷键后的成功消息"
   }
 }

@@ -61,7 +61,8 @@ async function createContextMenu() {
         contexts: ['all'],
         documentUrlPatterns: [
           '*://*.google.com/*',
-                    '*://*.baidu.com/*',
+          '*://*.google.com.*/*',
+          '*://*.baidu.com/*',
           '*://*.bing.com/*',
           '*://*.yahoo.com/*',
           '*://*.duckduckgo.com/*'
