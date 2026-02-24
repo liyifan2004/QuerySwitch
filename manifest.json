@@ -13,22 +13,23 @@
   ],
   "host_permissions": [
     "*://*.google.com/*",
+    "*://*.google.com.*/*",
     "*://*.baidu.com/*",
     "*://*.bing.com/*",
     "*://*.yahoo.com/*",
     "*://*.duckduckgo.com/*"
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": [
-        "*://*.google.com/search*",
-        "*://*.baidu.com/s*",
-        "*://*.bing.com/search*",
-        "*://*.yahoo.com/search*",
+        "*://*.google.com/*",
+        "*://*.google.com.*/*",
+        "*://*.baidu.com/*",
+        "*://*.bing.com/*",
+        "*://*.yahoo.com/*",
         "*://*.duckduckgo.com/*"
       ],
       "js": ["shared/constants.js", "shared/utils.js", "shared/i18n.js", "content.js"],

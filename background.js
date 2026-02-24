@@ -58,12 +58,13 @@ async function createContextMenu() {
       chrome.contextMenus.create({
         id: CONTEXT_MENU_PARENT,
         title: chrome.i18n.getMessage('contextMenuTitle') || 'Switch Search Engine',
-        contexts: ['page'],
+        contexts: ['all'],
         documentUrlPatterns: [
-          '*://*.google.com/search*',
-          '*://*.baidu.com/s*',
-          '*://*.bing.com/search*',
-          '*://*.yahoo.com/search*',
+          '*://*.google.com/*',
+          '*://*.google.com.*/*',
+          '*://*.baidu.com/*',
+          '*://*.bing.com/*',
+          '*://*.yahoo.com/*',
           '*://*.duckduckgo.com/*'
         ]
       }, () => {
@@ -85,12 +86,13 @@ async function createContextMenu() {
           id: `${CONTEXT_MENU_SWITCH_TO}${engine.id}`,
           parentId: CONTEXT_MENU_PARENT,
           title: engine.name,
-          contexts: ['page'],
+          contexts: ['all'],
           documentUrlPatterns: [
-            '*://*.google.com/search*',
-            '*://*.baidu.com/s*',
-            '*://*.bing.com/search*',
-            '*://*.yahoo.com/search*',
+            '*://*.google.com/*',
+            '*://*.google.com.*/*',
+            '*://*.baidu.com/*',
+            '*://*.bing.com/*',
+            '*://*.yahoo.com/*',
             '*://*.duckduckgo.com/*'
           ]
         }, () => {
@@ -128,6 +130,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command.startsWith('switch-to-')) {
     const targetEngineId = command.replace('switch-to-', '');
+    
+    // Tab may be undefined in some cases, need to query active tab
+    if (!tab) {
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tabs.length === 0) {
+        showNotification(
+          'No active tab',
+          'Please switch to a search results page first'
+        );
+        return;
+      }
+      tab = tabs[0];
+    }
+    
     await handleSwitch(tab, targetEngineId);
   }
 });
@@ -139,6 +155,15 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
  */
 async function handleSwitch(tab, targetEngineId) {
   try {
+    // Validate tab object
+    if (!tab || !tab.url) {
+      showNotification(
+        'Error',
+        'Cannot access current page. Please refresh and try again.'
+      );
+      return;
+    }
+    
     const currentEngine = detectSearchEngine(tab.url);
     
     if (!currentEngine) {
