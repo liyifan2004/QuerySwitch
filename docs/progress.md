@@ -2,14 +2,15 @@
 
 **项目**: QuerySwitch 浏览器扩展  
 **仓库**: https://github.com/liyifan2004/QuerySwitch  
+**Release**: https://github.com/liyifan2004/QuerySwitch/releases/tag/v1.0.0  
 **开始日期**: 2026年2月24日  
-**状态**: ✅ v1.0 开发完成
+**状态**: ✅ v1.0 发布完成
 
 ---
 
-## 📅 2026-02-24 19:05
+## 📅 2026-02-24 19:15
 
-### ✅ 已完成 - v1.0 完整实现
+### ✅ 已完成 - v1.0 正式发布
 
 #### 核心功能全部完成
 1. **Manifest V3 配置** (`manifest.json`)
@@ -68,8 +69,14 @@
    - 所有 UI 字符串已提取
 
 9. **图标** (`icons/`)
-   - SVG 源文件已创建
-   - 包含放大镜 + 切换箭头的设计
+   - 用户提供的 icon.jpg 已保存
+   - SVG 源文件备份
+
+10. **README 文档**
+    - 双语完整文档（中英文）
+    - 安装指南（开发者模式）
+    - 使用说明
+    - 技术细节
 
 ### 📁 项目结构
 ```
@@ -92,30 +99,45 @@ query-switch/
 │   ├── en/messages.json   # 英文翻译
 │   └── zh_CN/messages.json # 中文翻译
 ├── icons/
-│   ├── icon.svg           # 图标源文件
-│   └── README.md          # 图标生成说明
-└── docs/
-    └── progress.md        # 本进展文档
+│   ├── icon.jpg           # 扩展图标
+│   ├── icon.svg           # SVG 源文件
+│   └── README.md          # 图标说明
+├── docs/
+│   └── progress.md        # 本进展文档
+├── README.md              # 项目 README
+├── PRD.md                 # 产品需求文档
+├── CLAUDE.md              # Claude Code 工作文档
+├── IMPLEMENTATION_PLAN.md # 实施计划
+└── QuerySwitch-v1.0.zip   # 发布包
 ```
 
 ### 📊 代码统计
-- 总文件数: 16
-- 代码行数: ~1700 行
+- 总文件数: 20+
+- 代码行数: ~2000 行
 - JavaScript: 4 个核心脚本
 - HTML: 2 个页面
 - CSS: 2 个样式表
 - 国际化: 2 个语言文件
 
-### 🚀 GitHub 提交
-- 提交 SHA: `168b48e`
-- 提交信息: feat: implement QuerySwitch browser extension v1.0
-- 已推送至: https://github.com/liyifan2004/QuerySwitch
+### 🚀 GitHub Release
+- **版本**: v1.0.0
+- **Release 页面**: https://github.com/liyifan2004/QuerySwitch/releases/tag/v1.0.0
+- **下载文件**: QuerySwitch-v1.0.zip (318KB)
+- **提交 SHA**: `6d976ad`
 
-### 📝 待完成（后续版本）
-1. 生成 PNG 格式图标 (16x16, 32x32, 48x48, 128x128)
-2. 实际浏览器测试和调试
-3. 打包发布到 Chrome Web Store
-4. 可能的 bug 修复
+### 📥 用户安装方式
+
+#### 方式一：开发者模式（立即可用）
+1. 访问 https://github.com/liyifan2004/QuerySwitch/releases
+2. 下载 `QuerySwitch-v1.0.zip`
+3. 解压文件
+4. Chrome/Edge → 扩展程序 → 开发者模式 → 加载已解压的扩展程序
+5. 选择解压后的文件夹
+
+#### 方式二：Chrome Web Store（待上架）
+- 需要注册开发者账号并支付 $5 费用
+- 上传打包后的扩展
+- 等待审核
 
 ### ✅ 符合 PRD 要求
 - [x] 5个内置搜索引擎
@@ -127,3 +149,12 @@ query-switch/
 - [x] 中英文界面
 - [x] Manifest V3
 - [x] 数据本地存储 (chrome.storage.sync)
+- [x] 完整 README 文档
+- [x] GitHub Release 发布
+
+### 📝 后续可选优化
+1. 生成多种尺寸的 PNG 图标 (16x16, 32x32, 48x48, 128x128)
+2. Chrome Web Store 上架
+3. 添加更多搜索引擎（搜狗、360等）
+4. 批量打开多个搜索引擎功能
+5. 配置导入/导出
