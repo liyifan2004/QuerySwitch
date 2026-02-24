@@ -13,7 +13,6 @@
   ],
   "host_permissions": [
     "*://*.google.com/*",
-    "*://*.google.com.*/*",
     "*://*.baidu.com/*",
     "*://*.bing.com/*",
     "*://*.yahoo.com/*",
@@ -26,13 +25,17 @@
     {
       "matches": [
         "*://*.google.com/*",
-        "*://*.google.com.*/*",
         "*://*.baidu.com/*",
         "*://*.bing.com/*",
         "*://*.yahoo.com/*",
         "*://*.duckduckgo.com/*"
       ],
-      "js": ["shared/constants.js", "shared/utils.js", "shared/i18n.js", "content.js"],
+      "js": [
+        "shared/constants.js",
+        "shared/utils.js",
+        "shared/i18n.js",
+        "content.js"
+      ],
       "run_at": "document_end"
     }
   ],
