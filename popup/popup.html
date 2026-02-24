@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 data-i18n="extensionName">QuerySwitch</h1>
+    </header>
+    
+    <div id="query-section" class="query-section">
+      <label data-i18n="currentQuery">Current Query:</label>
+      <div id="current-query" class="query-text">-</div>
+    </div>
+    
+    <div id="engines-section" class="engines-section">
+      <label data-i18n="switchTo">Switch to:</label>
+      <div id="engines-list" class="engines-list">
+        <!-- Engines will be populated dynamically -->
+      </div>
+    </div>
+    
+    <div id="no-search-page" class="no-search-page hidden">
+      <p data-i18n="notSearchPage">Not on a search results page</p>
+    </div>
+    
+    <footer>
+      <a href="../options/options.html" target="_blank" data-i18n="options">Options</a>
+    </footer>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

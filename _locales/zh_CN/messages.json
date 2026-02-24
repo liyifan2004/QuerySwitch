@@ -1,0 +1,102 @@
+{
+  "extensionName": {
+    "message": "QuerySwitch",
+    "description": "扩展名称"
+  },
+  "extensionDescription": {
+    "message": "在搜索引擎之间快速切换搜索结果",
+    "description": "扩展描述"
+  },
+  "contextMenuTitle": {
+    "message": "切换搜索引擎",
+    "description": "右键菜单标题"
+  },
+  "cmdGoogle": {
+    "message": "切换到 Google",
+    "description": "Google 快捷键描述"
+  },
+  "cmdBaidu": {
+    "message": "切换到百度",
+    "description": "百度快捷键描述"
+  },
+  "cmdBing": {
+    "message": "切换到 Bing",
+    "description": "Bing 快捷键描述"
+  },
+  "currentQuery": {
+    "message": "当前搜索词：",
+    "description": "当前搜索词标签"
+  },
+  "switchTo": {
+    "message": "切换到：",
+    "description": "切换至标签"
+  },
+  "notSearchPage": {
+    "message": "当前页面不是搜索结果页",
+    "description": "非搜索页提示"
+  },
+  "options": {
+    "message": "选项",
+    "description": "选项链接"
+  },
+  "language": {
+    "message": "语言",
+    "description": "语言设置标题"
+  },
+  "selectLanguage": {
+    "message": "选择语言：",
+    "description": "语言选择标签"
+  },
+  "searchEngines": {
+    "message": "搜索引擎",
+    "description": "搜索引擎设置标题"
+  },
+  "addCustomEngine": {
+    "message": "添加自定义引擎",
+    "description": "添加引擎按钮"
+  },
+  "engineName": {
+    "message": "名称：",
+    "description": "引擎名称标签"
+  },
+  "engineUrl": {
+    "message": "搜索 URL（使用 {query}）：",
+    "description": "引擎 URL 标签"
+  },
+  "enginePattern": {
+    "message": "URL 匹配模式：",
+    "description": "引擎匹配模式标签"
+  },
+  "engineParam": {
+    "message": "查询参数：",
+    "description": "引擎查询参数标签"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "取消按钮"
+  },
+  "add": {
+    "message": "添加",
+    "description": "添加按钮"
+  },
+  "keyboardShortcuts": {
+    "message": "键盘快捷键",
+    "description": "快捷键设置标题"
+  },
+  "shortcutsHint": {
+    "message": "快捷键可在浏览器的扩展设置中自定义。",
+    "description": "快捷键提示"
+  },
+  "configureShortcuts": {
+    "message": "配置快捷键",
+    "description": "配置快捷键按钮"
+  },
+  "reset": {
+    "message": "重置",
+    "description": "重置设置标题"
+  },
+  "resetToDefaults": {
+    "message": "恢复默认设置",
+    "description": "重置按钮"
+  }
+}

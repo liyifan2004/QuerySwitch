@@ -1,0 +1,102 @@
+{
+  "extensionName": {
+    "message": "QuerySwitch",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Quickly switch search results between search engines",
+    "description": "Extension description"
+  },
+  "contextMenuTitle": {
+    "message": "Switch Search Engine",
+    "description": "Context menu title"
+  },
+  "cmdGoogle": {
+    "message": "Switch to Google",
+    "description": "Keyboard shortcut description for Google"
+  },
+  "cmdBaidu": {
+    "message": "Switch to Baidu",
+    "description": "Keyboard shortcut description for Baidu"
+  },
+  "cmdBing": {
+    "message": "Switch to Bing",
+    "description": "Keyboard shortcut description for Bing"
+  },
+  "currentQuery": {
+    "message": "Current Query:",
+    "description": "Label for current query"
+  },
+  "switchTo": {
+    "message": "Switch to:",
+    "description": "Label for switch to section"
+  },
+  "notSearchPage": {
+    "message": "Not on a search results page",
+    "description": "Message when not on search page"
+  },
+  "options": {
+    "message": "Options",
+    "description": "Options link text"
+  },
+  "language": {
+    "message": "Language",
+    "description": "Language section title"
+  },
+  "selectLanguage": {
+    "message": "Select Language:",
+    "description": "Language select label"
+  },
+  "searchEngines": {
+    "message": "Search Engines",
+    "description": "Search engines section title"
+  },
+  "addCustomEngine": {
+    "message": "Add Custom Engine",
+    "description": "Button to add custom engine"
+  },
+  "engineName": {
+    "message": "Name:",
+    "description": "Engine name label"
+  },
+  "engineUrl": {
+    "message": "Search URL (use {query}):",
+    "description": "Engine URL label"
+  },
+  "enginePattern": {
+    "message": "URL Pattern:",
+    "description": "Engine pattern label"
+  },
+  "engineParam": {
+    "message": "Query Parameter:",
+    "description": "Engine parameter label"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Cancel button"
+  },
+  "add": {
+    "message": "Add",
+    "description": "Add button"
+  },
+  "keyboardShortcuts": {
+    "message": "Keyboard Shortcuts",
+    "description": "Keyboard shortcuts section title"
+  },
+  "shortcutsHint": {
+    "message": "Shortcuts can be customized in your browser's extension settings.",
+    "description": "Hint about shortcuts"
+  },
+  "configureShortcuts": {
+    "message": "Configure Shortcuts",
+    "description": "Configure shortcuts button"
+  },
+  "reset": {
+    "message": "Reset",
+    "description": "Reset section title"
+  },
+  "resetToDefaults": {
+    "message": "Reset to Defaults",
+    "description": "Reset button"
+  }
+}

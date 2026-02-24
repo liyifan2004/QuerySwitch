@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="20" fill="#1a73e8"/>
+  <g fill="none" stroke="white" stroke-width="8" stroke-linecap="round">
+    <!-- Search magnifying glass -->
+    <circle cx="55" cy="55" r="25"/>
+    <line x1="73" y1="73" x2="95" y2="95"/>
+    <!-- Switch arrows -->
+    <path d="M85 35 L95 35 L95 45"/>
+    <path d="M95 35 L80 50"/>
+  </g>
+</svg>
